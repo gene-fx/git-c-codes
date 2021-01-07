@@ -1,0 +1,102 @@
+#include <stdlib.h>
+#include <iostream>
+#include <conio.h>
+
+using namespace std;
+
+int n;
+int *vet = new int[n];
+int control=0;
+
+int mergesort(int vet[], int n)
+{
+                 int meio;
+                 int *esq = new int[n/2];
+                 int *dir = new int[n/2];
+    
+    if(n<=1)
+            return 0;        
+    else
+        control++;
+                          
+    if(control==1) 
+    {                 
+                 meio=vet[n-1];
+    
+                 for(int i=0; i<n; i++)
+                 {
+                         if(vet[i] <= meio)
+                         {         
+                                   esq[i]=vet[i];
+                                   cout<<esq[i]<<" esquerda"<<endl;
+                         }
+                         
+                         if(vet[i] > meio)
+                         {
+                                   dir[i]=vet[i];
+                                   cout<<dir[i]<<" direita"<<endl;
+                         }                
+                 }//fim do for
+     }//fim if
+     else
+     {                  
+         for(int i=0; i<n; i++)
+                 for(int j=0; i<n; i++)
+                 {
+                         if(dir[j] > dir[i])
+                         {
+                                   int aux = dir[j];
+                                   dir[j] = dir[i];
+                                   dir[i] = aux;                 
+                         }//fim if
+                                         
+                         if(esq[j] > esq[i])
+                         {
+                                   int aux = esq[j];
+                                   esq[j] = esq[i];
+                                   esq[i] = aux;                 
+                         }//fim if
+                 }//fim for
+     }//fim else
+     
+     
+                 mergesort(dir, n/2);
+                 mergesort(esq, n/2);
+                 
+                 for(int i=0; i<n; i++)
+                 {
+                         if(esq[i] < dir[i])
+                                   vet[i] = esq[i];
+                         else
+                             vet[i] = dir[i];                                         
+                 }
+          
+}//fim merge
+
+int main()
+{
+    cout<<"Tamanho do array?\n";
+    cin >> n;
+    cin.ignore();
+    
+    system("cls");
+ 
+    cout<<"Informe os numeros\n";
+    
+    for(int i=0; i<n; i++)
+    {
+            cout<<"["<<i+1<<"]\n";
+            cin >> vet[i];
+            cin.ignore();       
+    }
+    
+    mergesort(vet,n);
+    
+    system("pause");
+    system("cls");
+    
+    for(int i=0; i<n; i++)
+            cout<<"\n"<<vet[i];      
+    
+    getch();
+}
