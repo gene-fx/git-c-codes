@@ -1,0 +1,203 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+#include <iostream>
+
+//AUTOR: ANÉZIO RODRIGUES JUNIOR
+
+
+
+struct noarv
+{
+   char nome[100];
+   noarv *esq,*dir;	
+};
+
+noarv *raiz,*no,*aux;
+
+char *strcpy(char *origin, char *dest)
+{
+     printf("\n%d\n",strlen(origin));
+     system("pause");
+     
+     for(int i=0; i<strlen(origin); i++)
+             dest[i] = origin[i];
+     
+     printf("\n%s",dest);
+     
+     return dest;
+}
+
+noarv* maketree(char name[])
+{
+    no = new noarv;
+  	strcpy(name, (*no).nome);
+  	(*no).esq = NULL;
+  	(*no).dir = NULL;
+  	return no;
+}
+
+void imprime(noarv *a) 
+{      
+	  if(a!=NULL)
+	  {
+          printf("Nome = %s\n\n",(*a).nome);
+		  imprime((*a).esq);
+		  imprime((*a).dir);
+	  }
+}
+
+int tamanho(char *name)
+{
+    int conta;
+        
+    while(*name != '\0')
+    {
+                 conta++;
+                 name++;
+    }   
+    return conta;
+}
+
+noarv *busca(char name[], noarv *a)
+{  
+       if(a!=NULL)
+	   {
+                 if(strcmp((*a).nome, name)==0) 
+                                      return a;
+                 else
+                 {   
+                     if(tamanho((*a).nome) < tamanho(name))
+                                          return busca(name, (*a).dir);
+                     else
+                         return busca(name, (*a).esq);                                
+                 }         
+       }
+       else
+           printf("Arvore vazia.");
+}
+
+void mostra(noarv *a)
+{  
+    imprime(a);
+    getchar();	
+}
+
+
+noarv *termina(noarv *a)
+{
+       if(a!=NULL)
+	  {
+    	   printf("andando nomes = %c\n ",(*a).nome);
+    	   getch();
+
+     	   printf("\n andando esquerda\n ");
+		   termina((*a).esq);
+		   system("pause");
+		   system("cls");
+
+		   
+	 	   printf("\n andando direita\n ");
+	       termina((*a).dir);
+	       system("pause");
+           system("cls");	  
+          
+		  free(a);
+		  
+		  printf("\n endereco memoriA limpou = %u\n ",a);
+		
+          getch();
+	  }
+	  else
+	  {    
+          printf ("\n achou NULL");
+      }    
+      return NULL;
+}    
+     
+
+
+void inserearv(struct noarv *a, char name[])
+{  
+   struct noarv *aux;
+   
+    do{ 
+		aux=a;
+		if(tamanho((*a).nome) > tamanho(name))
+		   a=(*a).esq;
+		else
+		   a=(*a).dir;
+	}while(a!=NULL);
+ 
+  	if(aux!=NULL)
+  	{
+		  if(tamanho(name) < tamanho((*a).nome))
+		  {
+             printf("\n\n\n vai criar na esq");              
+		     (*a).esq = maketree(name);//novo no esq
+          }
+		  else
+		  {
+              printf("\n\n\n vai criar na dir");    
+		     (*a).dir = maketree(name);//novo direita
+          }
+	}
+}
+
+int main()
+{   
+    noarv *aux2;
+    int teclado=0, op=0;
+    char name[100];
+  	raiz=NULL;
+  	
+  	printf("\n\n\n\n\n\n                    ***********************\n");
+  	printf("                    Arvore de busca binaria\n");
+  	printf("                    ***********************\n\n\n\n\n\n\n");
+  	system("pause");
+  	system("cls");
+    
+
+  
+    while(true)
+  	{   
+        system("cls");
+        printf("------------------Para sair digite 'fim'------------------\n\n\n\n\n\n\n\n\n");
+        printf("Digite o nome\n");               
+        scanf("%s",&name); 
+        fflush(stdin);
+        
+        if(strcmp(name,"fim") == 0)
+                 break;
+                 
+        if(raiz==NULL)
+        {
+           raiz = maketree(name);
+           printf("\nchamo maketree\n");
+        }
+        else
+           inserearv(raiz,name);
+           
+           system("pause");   
+               
+        mostra(raiz);       
+    }      
+    
+    printf("\nEntre com o numero a ser pesquisado: ");
+	scanf("%d",&teclado);
+	aux2=busca(name,raiz);
+
+    if(aux!=NULL)
+        printf("\n achou valor=%s",(*aux2).nome);
+    else
+        printf("\n nao achou ");
+    getch();
+        
+    raiz=termina(raiz);
+    printf("\n endereco raiz = %u\n ",raiz);
+    getch();
+    
+    mostra(raiz);
+  	return 0;
+}
